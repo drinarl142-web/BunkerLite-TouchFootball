@@ -66,11 +66,10 @@ local aa=Instance.new("UIStroke")aa.ApplyStrokeMode=Enum.ApplyStrokeMode.Context
 local ab=Instance.new("TextBox")ab.Name="GravityBox"ab.Parent=w ab.AnchorPoint=Vector2.new(0,1)ab.BackgroundColor3=Color3.fromRGB(234,234,234)ab.BorderSizePixel=0 ab.Font=Enum.Font.ArialBold ab.TextSize=12 ab.PlaceholderColor3=Color3.fromRGB(127,127,127)ab.PlaceholderText="55"ab.Position=UDim2.new(0.5,0,1.049,0)ab.Size=UDim2.new(0.156,0,0.17,0)ab.Text="55"ab.TextColor3=Color3.fromRGB(0,0,0)
 local ac=Instance.new("UICorner")ac.CornerRadius=UDim.new(0,8)ac.Parent=ab
 local ad=Instance.new("UIStroke")ad.ApplyStrokeMode=Enum.ApplyStrokeMode.Border ad.Color=Color3.fromRGB(0,0,0)ad.Parent=ab ad.Thickness=1
-ab.FocusLost:Connect(function()local a=tonumber(ab.Text)if a then workspace.Gravity=a else ab.Text="55"workspace.Gravity=55 end end)
 
 local ae=Instance.new("TextLabel")ae.Name="ReachLabel"ae.Parent=v ae.AnchorPoint=Vector2.new(0,1)ae.BackgroundTransparency=1 ae.Font=Enum.Font.ArialBold ae.TextSize=18 ae.Position=UDim2.new(0.137,0,0.898,0)ae.Size=UDim2.new(0.2,0,0.1,0)ae.Text="Reach"ae.TextColor3=Color3.fromRGB(255,255,255)
 local af=Instance.new("UIStroke")af.ApplyStrokeMode=Enum.ApplyStrokeMode.Contextual af.Color=Color3.fromRGB(0,0,0)af.Parent=ae af.Thickness=1
-local ag=Instance.new("TextBox")ag.Name="ReachBox"ag.Parent=v ag.AnchorPoint=Vector2.new(0,1)ag.BackgroundColor3=Color3.fromRGB(234,234,234)ag.BorderSizePixel=0 ag.Font=Enum.Font.ArialBold ag.TextSize=12 ag.PlaceholderColor3=Color3.fromRGB(127,127,127)ag.PlaceholderText="3-7"ag.Position=UDim2.new(0.4,0,0.92,0)ag.Size=UDim2.new(0.159,0,0.158,0)ag.Text="3"ag.TextColor3=Color3.fromRGB(0,0,0)
+local ag=Instance.new("TextBox")ag.Name="ReachBox"ag.Parent=v ag.AnchorPoint=Vector2.new(0,1)ag.BackgroundColor3=Color3.fromRGB(234,234,234)ag.BorderSizePixel=0 ag.Font=Enum.Font.ArialBold ag.TextSize=12 ag.PlaceholderColor3=Color3.fromRGB(127,127,127)ag.PlaceholderText="1-10"ag.Position=UDim2.new(0.4,0,0.92,0)ag.Size=UDim2.new(0.159,0,0.158,0)ag.Text="3"ag.TextColor3=Color3.fromRGB(0,0,0)
 local ah=Instance.new("UICorner")ah.CornerRadius=UDim.new(0,8)ah.Parent=ag
 local ai=Instance.new("UIStroke")ai.ApplyStrokeMode=Enum.ApplyStrokeMode.Border ai.Color=Color3.fromRGB(0,0,0)ai.Parent=ag ai.Thickness=1
 
@@ -81,65 +80,65 @@ local at=function()local a=workspace:FindFirstChild("FootballField")if a then re
 local au=function()local a=at()if a then local b=I.Text local c=tonumber(b)if not c or c<0.1 or c>15 then I.Text="3"c=3 end a.Size=Vector3.new(c,c,c)end end
 local av=function()local a=P.Text local b=tonumber(a)if not b or b<1 or b>15 then P.Text="1"b=1 end as.Size=Vector3.new(9+b,9+b,9+b)end
 
+local plr=game:GetService("Players").LocalPlayer
+local reachRange=3
+local reachActive=true
+
 local function updateReach()
-    local text=ag.Text
-    local num=tonumber(text)
-    local validNums={3,4,5,6,7}
-    local valid=false
-    for _,v in ipairs(validNums) do
-        if num==v then
-            valid=true
-            break
-        end
-    end
-    if not valid or not num then
+    local val=tonumber(ag.Text)
+    if not val then
         ag.Text="3"
-        num=3
-    end
-    
-    local reachRange=num
-    local mt=getrawmetatable(game)
-    if reachMeta then
-        setreadonly(reachMeta.mt,false)
-        reachMeta.mt.__index=reachMeta.oldIndex
-    end
-    setreadonly(mt,false)
-    local oldIndex=mt.__index
-    mt.__index=function(self,key)
-        if key=="Position" and self.Name=="UpperTorso" then
-            local ball=workspace:FindFirstChild("FootballField") and workspace.FootballField:FindFirstChild("SoccerBall")
-            if ball then
-                local char=game:GetService("Players").LocalPlayer.Character
-                if char and self.Parent==char then
-                    local realPos=oldIndex(self,key)
-                    local ballPos=ball.Position
-                    local dist=(ballPos-realPos).Magnitude
-                    if dist<=reachRange and dist>1.825 then
-                        local hrp=char:FindFirstChild("HumanoidRootPart")
-                        if hrp then
-                            local hrpPos=hrp.Position
-                            local flatBallPos=Vector3.new(ballPos.X,hrpPos.Y+1.3,ballPos.Z)
-                            local direction=(flatBallPos-hrpPos).Unit
-                            return flatBallPos-direction*1.5
-                        end
-                    end
-                end
-            end
+        reachRange=3
+    else
+        if val<1 then
+            ag.Text="1"
+            reachRange=1
+        elseif val>10 then
+            ag.Text="10"
+            reachRange=10
+        else
+            reachRange=val
         end
-        return oldIndex(self,key)
     end
-    setreadonly(mt,true)
-    reachMeta={mt=mt, oldIndex=oldIndex}
 end
 
 ag.FocusLost:Connect(updateReach)
 updateReach()
 
+local mt=getrawmetatable(game)
+setreadonly(mt,false)
+local oldIndex=mt.__index
+
+mt.__index=function(self,key)
+    if key=="Position" and reachActive then
+        local ball=workspace:FindFirstChild("FootballField") and workspace.FootballField:FindFirstChild("SoccerBall")
+        if ball then
+            local char=plr.Character
+            if char and self.Parent==char and self.Name=="UpperTorso" then
+                local realPos=oldIndex(self,key)
+                local ballPos=ball.Position
+                local dist=(ballPos-realPos).Magnitude
+                if dist<=reachRange and dist>1.825 then
+                    local head=char:FindFirstChild("Head")
+                    if head then
+                        local headPos=head.Position
+                        local flatBallPos=Vector3.new(ballPos.X,headPos.Y,ballPos.Z)
+                        local direction=(flatBallPos-headPos).Unit
+                        return flatBallPos-direction*1.5
+                    end
+                end
+            end
+        end
+    end
+    return oldIndex(self,key)
+end
+
+setreadonly(mt,true)
+
 local maxSprintActive=false
 local maxSprintHeartbeat=nil
 local pokerHeartbeat=nil
-local reachActive=true
-local reachMeta=nil
+local pokerTeleportConnection=nil
 local predictionActive=false
 local predictionRenderStepped=nil
 local predictionFolder=nil
@@ -158,6 +157,57 @@ local function stopPokerHeartbeat()
         pokerHeartbeat:Disconnect()
         pokerHeartbeat=nil
     end
+end
+
+local function stopPokerTeleport()
+    if pokerTeleportConnection then
+        pokerTeleportConnection:Disconnect()
+        pokerTeleportConnection=nil
+    end
+end
+
+local function startPokerTeleport()
+    stopPokerTeleport()
+    local player=game:GetService("Players").LocalPlayer
+    
+    pokerTeleportConnection=game:GetService("RunService").Heartbeat:Connect(function()
+        if not aq then
+            stopPokerTeleport()
+            return
+        end
+        
+        local ball=at()
+        if not ball then return end
+        
+        local character=player.Character
+        if not character then return end
+        
+        local hrp=character:FindFirstChild("HumanoidRootPart")
+        if not hrp then return end
+        
+        local distance=(ball.Position-hrp.Position).Magnitude
+        
+        if distance<=6 then
+            local conn
+            conn=ball.Touched:Connect(function(hit)
+                if not aq then
+                    if conn then conn:Disconnect() end
+                    return
+                end
+                local hitPlayer=game:GetService("Players"):GetPlayerFromCharacter(hit.Parent)
+                if hitPlayer and hitPlayer~=player then
+                    local currentDist=(ball.Position-hrp.Position).Magnitude
+                    if currentDist<=6 then
+                        ball.Anchored=true
+                        ball.CFrame=hrp.CFrame*CFrame.new(0,0,-3)
+                        ball.Anchored=false
+                    end
+                end
+            end)
+            task.wait(0.1)
+            if conn then conn:Disconnect() end
+        end
+    end)
 end
 
 local function findBall()
@@ -182,14 +232,13 @@ local function soccerBallTrajectory(t, vel, pos, gravity, rotSpeed)
     local px = pos.X + vel.X * t + 0.5 * (rx - vel.X) * t
     local py = pos.Y + vel.Y * t - 0.5 * gravity * t * t
     local pz = pos.Z + vel.Z * t + 0.5 * (rz - vel.Z) * t
-    local newRot = Vector3.new(rx, vy - gravity * t, rz)
-    return Vector3.new(px, py, pz), newRot
+    return Vector3.new(px, py, pz)
 end
 
 local function createPredictionVisuals()
     if predictionFolder then return end
     predictionFolder=Instance.new("Folder")
-    predictionFolder.Name="TbhorBallPrediction"
+    predictionFolder.Name="BunkerPrediction"
     predictionFolder.Parent=workspace
     
     local att0=Instance.new("Attachment",predictionFolder)
@@ -246,7 +295,7 @@ local function updatePrediction()
     
     for i=1,steps do
         local t=i*0.008
-        local predicted,_=soccerBallTrajectory(t,vel,pos,gravity,rotSpeed)
+        local predicted=soccerBallTrajectory(t,vel,pos,gravity,rotSpeed)
         if predicted.Y<5.5 then
             predicted=Vector3.new(predicted.X,5.5,predicted.Z)
             break
@@ -340,6 +389,7 @@ a5.MouseButton1Click:Connect(function()
             V.BackgroundColor3=Color3.fromRGB(255,0,0)
             a0.Color=Color3.fromRGB(255,0,0)
             stopPokerHeartbeat()
+            stopPokerTeleport()
         end
         a5.Text="Max Sprint On"
         a5.BackgroundColor3=Color3.fromRGB(0,255,0)
@@ -353,7 +403,7 @@ a5.MouseButton1Click:Connect(function()
             coroutine.wrap(function()
                 while maxSprintActive do
                     task.wait(0.2)
-                    b:FireServer(player.Name,22)
+                    b:FireServer(player.Name,22,"dihtelkds")
                 end
             end)()
         end
@@ -399,16 +449,21 @@ local ay=function(a)aq=a if aq then
         coroutine.wrap(function()
             while aq do
                 task.wait(0.2)
-                b:FireServer(player.Name,16)
+                b:FireServer(player.Name,16,"dihtelkds")
             end
         end)()
     end
     stopPokerHeartbeat()
     pokerHeartbeat=game:GetService("RunService").Heartbeat:Connect(function()
-        if aq and humanoid and humanoid.WalkSpeed~=16 then
-            humanoid.WalkSpeed=16
+        if aq then
+            if humanoid and humanoid.WalkSpeed>16 then
+                humanoid.WalkSpeed=16
+            elseif humanoid and humanoid.WalkSpeed<15 then
+                humanoid.WalkSpeed=15
+            end
         end
     end)
+    startPokerTeleport()
 else 
     Y.Text="Poker Off"
     Y.BackgroundColor3=Color3.fromRGB(218,218,218)
@@ -416,6 +471,7 @@ else
     V.BackgroundColor3=Color3.fromRGB(255,0,0)
     a0.Color=Color3.fromRGB(255,0,0)
     stopPokerHeartbeat()
+    stopPokerTeleport()
     if not maxSprintActive then
         local player=game:GetService("Players").LocalPlayer
         local character=player.Character or player.CharacterAdded:Wait()
@@ -445,3 +501,34 @@ a1.MouseButton1Click:Connect(function()
         enablePrediction()
     end
 end)
+
+local function gravityBypass()
+    local player=game:GetService("Players").LocalPlayer
+    local character=player.Character or player.CharacterAdded:Wait()
+    local ballHandler=nil
+    for _,script in ipairs(character:GetDescendants()) do
+        if script:IsA("LocalScript") and script.Name=="BallHandler" then
+            ballHandler=script
+            break
+        end
+    end
+    if ballHandler then
+        local env=getfenv(ballHandler)
+        if env then
+            local gval=tonumber(ab.Text) or 55
+            if env.v_u_21 then
+                env.v_u_21=gval
+            end
+            if env.soccerBallTrajectory then
+                local orig=env.soccerBallTrajectory
+                env.soccerBallTrajectory=function(t,vel,pos,grav,rot)
+                    return orig(t,vel,pos,gval,rot)
+                end
+            end
+        end
+    end
+end
+
+gravityBypass()
+ab.FocusLost:Connect(gravityBypass)
+game:GetService("Players").LocalPlayer.CharacterAdded:Connect(gravityBypass)
