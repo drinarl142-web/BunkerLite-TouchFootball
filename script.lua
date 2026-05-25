@@ -1,7 +1,6 @@
 local a="7b9e0098c268b7d1c67dade4de9e2b966c2930b8dee0f4a81c86325305f87870"local b=game:GetService("CoreGui")local c=b:FindFirstChild(a)if c and c:FindFirstChild("BunkerLite")then return end
 c=c or Instance.new("Folder")c.Name=a c.Parent=b
 local d=Instance.new("ScreenGui")d.Name="BunkerLite"d.Parent=c d.ResetOnSpawn=false d.Enabled=true
-local soundStart=Instance.new("Sound")soundStart.SoundId="rbxassetid://138719267809645"soundStart.Volume=1 soundStart.Parent=d soundStart:Play()soundStart.Ended:Wait()
 local function playClick()local s=Instance.new("Sound")s.SoundId="rbxassetid://138567614125924"s.Volume=1 s.Parent=d s:Play()end
 local e=Instance.new("TextButton")e.Name="OpenGuiButton"e.Parent=d e.AnchorPoint=Vector2.new(0,1)e.BackgroundColor3=Color3.fromRGB(255,0,0)e.Position=UDim2.new(0.4,0,0.1,0)e.Size=UDim2.new(0.07,0,0.148,0)e.Visible=true e.Active=true e.Draggable=true e.Font=Enum.Font.ArialBold e.TextSize=12 e.Text="Open"e.TextColor3=Color3.fromRGB(0,0,0)
 local f=Instance.new("UICorner")f.CornerRadius=UDim.new(0,5)f.Parent=e
@@ -17,8 +16,16 @@ local o=Instance.new("UIStroke")o.ApplyStrokeMode=Enum.ApplyStrokeMode.Border o.
 local p=Instance.new("TextButton")p.Name="FunButton"p.Parent=h p.AnchorPoint=Vector2.new(0,1)p.BackgroundColor3=Color3.fromRGB(0,0,255)p.BorderSizePixel=0 p.Font=Enum.Font.BuilderSansBold p.TextSize=18 p.Position=UDim2.new(0.017,0,0.6,0)p.Size=UDim2.new(0.3,0,0.128,0)p.Text="Fun"p.TextColor3=Color3.fromRGB(255,255,255)
 local q=Instance.new("UICorner")q.CornerRadius=UDim.new(0,20)q.Parent=p
 local r=Instance.new("UIStroke")r.ApplyStrokeMode=Enum.ApplyStrokeMode.Border r.Color=Color3.fromRGB(127,0,0)r.Parent=p r.Thickness=1.899 r.Transparency=0.5
+local settingsButton=Instance.new("TextButton")settingsButton.Name="SettingsButton"settingsButton.Parent=h settingsButton.AnchorPoint=Vector2.new(0,1)settingsButton.BackgroundColor3=Color3.fromRGB(0,0,255)settingsButton.BorderSizePixel=0 settingsButton.Font=Enum.Font.BuilderSansBold settingsButton.TextSize=18 settingsButton.Position=UDim2.new(0.017,0,0.8,0)settingsButton.Size=UDim2.new(0.3,0,0.128,0)settingsButton.Text="Settings"settingsButton.TextColor3=Color3.fromRGB(255,255,255)
+local settingsCorner=Instance.new("UICorner")settingsCorner.CornerRadius=UDim.new(0,20)settingsCorner.Parent=settingsButton
+local settingsStroke=Instance.new("UIStroke")settingsStroke.ApplyStrokeMode=Enum.ApplyStrokeMode.Border settingsStroke.Color=Color3.fromRGB(127,0,0)settingsStroke.Name="UIStroke1"settingsStroke.Parent=settingsButton settingsStroke.Thickness=1.899 settingsStroke.Transparency=0.5
 local v=Instance.new("Frame")v.Name="MainFrame1"v.Parent=h v.AnchorPoint=Vector2.new(0,1)v.BackgroundColor3=Color3.fromRGB(188,0,0)v.BackgroundTransparency=0.8 v.BorderSizePixel=0 v.Position=UDim2.new(0.4,0,0.958,0)v.Size=UDim2.new(0.578,0,0.699,0)v.Visible=false
 local w=Instance.new("Frame")w.Name="FunFrame"w.Parent=h w.AnchorPoint=Vector2.new(0,1)w.BackgroundColor3=Color3.fromRGB(188,0,0)w.BackgroundTransparency=0.8 w.BorderSizePixel=0 w.Position=UDim2.new(0.4,0,0.958,0)w.Size=UDim2.new(0.578,0,0.699,0)w.Visible=false
+local settingsFrame=Instance.new("Frame")settingsFrame.Name="SettingsFrame"settingsFrame.Parent=h settingsFrame.AnchorPoint=Vector2.new(0,1)settingsFrame.BackgroundColor3=Color3.fromRGB(188,0,0)settingsFrame.BackgroundTransparency=0.8 settingsFrame.BorderSizePixel=0 settingsFrame.Position=UDim2.new(0.4,0,0.958,0)settingsFrame.Size=UDim2.new(0.578,0,0.699,0)settingsFrame.Visible=false
+local noAnimationButton=Instance.new("TextButton")noAnimationButton.Name="NoAnimationButton"noAnimationButton.Parent=settingsFrame noAnimationButton.AnchorPoint=Vector2.new(0,1)noAnimationButton.BackgroundColor3=Color3.fromRGB(255,0,0)noAnimationButton.BorderSizePixel=0 noAnimationButton.Font=Enum.Font.BuilderSansBold noAnimationButton.TextSize=12 noAnimationButton.Position=UDim2.new(0.15,0,0.3,0)noAnimationButton.Size=UDim2.new(0.3,0,0.17,0)noAnimationButton.Text="No Animation"noAnimationButton.TextColor3=Color3.fromRGB(255,255,255)
+local noAnimationCorner=Instance.new("UICorner")noAnimationCorner.CornerRadius=UDim.new(0,11)noAnimationCorner.Parent=noAnimationButton
+local noAnimationStroke1=Instance.new("UIStroke")noAnimationStroke1.ApplyStrokeMode=Enum.ApplyStrokeMode.Border noAnimationStroke1.Color=Color3.fromRGB(0,0,0)noAnimationStroke1.Name="UIStroke1"noAnimationStroke1.Parent=noAnimationButton noAnimationStroke1.Thickness=2.5 noAnimationStroke1.Transparency=0.2
+local noAnimationStroke2=Instance.new("UIStroke")noAnimationStroke2.ApplyStrokeMode=Enum.ApplyStrokeMode.Contextual noAnimationStroke2.Color=Color3.fromRGB(0,0,127)noAnimationStroke2.Name="UIStroke2"noAnimationStroke2.Parent=noAnimationButton noAnimationStroke2.Thickness=0.5 noAnimationStroke2.Transparency=0
 local x=Instance.new("TextButton")x.Name="BringBallButton"x.Parent=w x.AnchorPoint=Vector2.new(0,1)x.BackgroundColor3=Color3.fromRGB(0,0,0)x.BorderSizePixel=0 x.Font=Enum.Font.ArialBold x.TextSize=12 x.Position=UDim2.new(0.1,0,0.3,0)x.Size=UDim2.new(0.349,0,0.2,0)x.Text="Bring Ball"x.TextColor3=Color3.fromRGB(255,255,255)
 local y=Instance.new("UICorner")y.CornerRadius=UDim.new(0,8)y.Parent=x
 local z=Instance.new("UIStroke")z.ApplyStrokeMode=Enum.ApplyStrokeMode.Border z.Color=Color3.fromRGB(255,255,255)z.Parent=x z.Thickness=2
@@ -132,6 +139,7 @@ local predictionRenderStepped=nil
 local predictionFolder=nil
 local beam=nil
 local landingRing=nil
+local animationEnabled=true
 local function stopMaxSprintHeartbeat()
     if maxSprintHeartbeat then
         maxSprintHeartbeat:Disconnect()
@@ -435,30 +443,56 @@ else
         humanoid.WalkSpeed=16
     end
 end end
-e.MouseButton1Click:Connect(function()playClick()if not am then h.Visible=true al:Create(ak,TweenInfo.new(0.5),{Size=20}):Play()al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Position=UDim2.new(0.2,0,0.799,0)}):Play()am=true e.Text="Close"else al:Create(ak,TweenInfo.new(0.5),{Size=0}):Play()local a=al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Position=UDim2.new(0.2,0,1.669,0)})a:Play()a.Completed:Connect(function()h.Visible=false end)am=false e.Text="Open"end end)
+local function toggleMainFrame()
+    if not am then
+        h.Visible=true
+        if animationEnabled then
+            al:Create(ak,TweenInfo.new(0.5),{Size=20}):Play()
+            al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Position=UDim2.new(0.2,0,0.799,0)}):Play()
+        else
+            ak.Size=20
+            h.Position=UDim2.new(0.2,0,0.799,0)
+        end
+        am=true
+        e.Text="Close"
+    else
+        if animationEnabled then
+            al:Create(ak,TweenInfo.new(0.5),{Size=0}):Play()
+            local a=al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Position=UDim2.new(0.2,0,1.669,0)})
+            a:Play()
+            a.Completed:Connect(function()h.Visible=false end)
+        else
+            ak.Size=0
+            h.Position=UDim2.new(0.2,0,1.669,0)
+            h.Visible=false
+        end
+        am=false
+        e.Text="Open"
+    end
+end
+e.MouseButton1Click:Connect(function()playClick()toggleMainFrame()end)
 local uis=game:GetService("UserInputService")
 uis.InputBegan:Connect(function(input,gameProcessed)
     if gameProcessed then return end
     if input.KeyCode==Enum.KeyCode.E then
         playClick()
-        if not am then
-            h.Visible=true
-            al:Create(ak,TweenInfo.new(0.5),{Size=20}):Play()
-            al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),{Position=UDim2.new(0.2,0,0.799,0)}):Play()
-            am=true
-            e.Text="Close"
-        else
-            al:Create(ak,TweenInfo.new(0.5),{Size=0}):Play()
-            local a=al:Create(h,TweenInfo.new(0.5,Enum.EasingStyle.Quad,Enum.EasingDirection.In),{Position=UDim2.new(0.2,0,1.669,0)})
-            a:Play()
-            a.Completed:Connect(function()h.Visible=false end)
-            am=false
-            e.Text="Open"
-        end
+        toggleMainFrame()
     end
 end)
-m.MouseButton1Click:Connect(function()playClick()v.Visible=not v.Visible if v.Visible then w.Visible=false end end)
-p.MouseButton1Click:Connect(function()playClick()w.Visible=not w.Visible if w.Visible then v.Visible=false end end)
+m.MouseButton1Click:Connect(function()playClick()v.Visible=not v.Visible if v.Visible then w.Visible=false settingsFrame.Visible=false end end)
+p.MouseButton1Click:Connect(function()playClick()w.Visible=not w.Visible if w.Visible then v.Visible=false settingsFrame.Visible=false end end)
+settingsButton.MouseButton1Click:Connect(function()playClick()settingsFrame.Visible=not settingsFrame.Visible if settingsFrame.Visible then v.Visible=false w.Visible=false end end)
+noAnimationButton.MouseButton1Click:Connect(function()
+    playClick()
+    animationEnabled=not animationEnabled
+    if animationEnabled then
+        noAnimationButton.Text="Animation"
+        noAnimationButton.BackgroundColor3=Color3.fromRGB(0,255,0)
+    else
+        noAnimationButton.Text="No Animation"
+        noAnimationButton.BackgroundColor3=Color3.fromRGB(255,0,0)
+    end
+end)
 x.MouseButton1Click:Connect(function()playClick()local a=at()if a then local b=game:GetService("Players").LocalPlayer local c=b.Character if c then local d=c:FindFirstChild("HumanoidRootPart")if d then a.Anchored=false a.CFrame=d.CFrame*CFrame.new(0,0,-3)end end end end)
 A.MouseButton1Click:Connect(function()playClick()local a=at()if a then an=not an a.Anchored=an A.Text=an and"Unanchor Ball"or"Anchor Ball"end end)
 D.MouseButton1Click:Connect(function()playClick()settings().Rendering.QualityLevel=1 local a=game:GetService("Players").LocalPlayer for _,b in ipairs(workspace:GetDescendants())do if b:IsA("BasePart")and b.Name~="SoccerBall"then b.Material=Enum.Material.SmoothPlastic elseif(b:IsA("Decal")or b:IsA("Texture"))and b.Parent and b.Parent.Name~="SoccerBall"and not b.Parent:IsDescendantOf(a.Character)then b:Destroy()elseif(b:IsA("ParticleEmitter")or b:IsA("Trail"))and(not b.Parent or(b.Parent and not b.Parent:IsDescendantOf(a.Character)))then b:Destroy()end end game:GetService("RunService"):Set3dRenderingEnabled(false)wait(0.1)game:GetService("RunService"):Set3dRenderingEnabled(true)end)
